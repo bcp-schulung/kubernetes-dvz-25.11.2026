@@ -4,7 +4,7 @@ RUN apk add --no-cache nginx curl bind-tools nano \
     && mkdir -p /run/nginx \
     && printf '%s\n' \
         'server {' \
-        '    listen 80;' \
+        '    listen 8080;' \
         '    server_name _;' \
         '    root /var/www/html;' \
         '    index index.html;' \
@@ -12,11 +12,11 @@ RUN apk add --no-cache nginx curl bind-tools nano \
 
 COPY index.html /var/www/html/index.html
 
-EXPOSE 80
+EXPOSE 8080
 
 USER nginx
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-    CMD curl --fail --silent --show-error http://127.0.0.1/ > /dev/null || exit 1
+    CMD curl --fail --silent --show-error http://127.0.0.1:8080/ > /dev/null || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
